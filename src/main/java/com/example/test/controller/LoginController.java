@@ -2,12 +2,16 @@ package com.example.test.controller;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.test.bean.User;
+import com.example.test.dto.LoginDto;
 import com.example.test.mapper.UserMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +34,17 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public String logout(HttpSession session) {
         if (session.getAttribute("username") != null) {
-            System.out.println("userName: " + session.getAttribute("username") + " logout!");
+            System.out.println(String.format("userName: %s logout!",session.getAttribute("username")));
         }
         return "redirect:/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(String username, String password, HttpSession session) {
+    public String login(@Valid LoginDto payload, BindingResult br, String username, String password, HttpSession session) {
+        if (br.hasErrors()) {
+            session.setAttribute("errormsg", br.getFieldError().getDefaultMessage());
+            return "login";
+        }
         List<User> users = usersMapper.selectByMap(new HashMap<>() {{
             put("username", username);
             put("password", password);
@@ -54,7 +62,7 @@ public class LoginController {
         session.setAttribute("userId", user.getId());
         session.setAttribute("username", user.getUsername());
         session.setAttribute("errormsg", "");
-        System.out.println(String.format("userName:%s logged in!", user.getUsername()));
+        System.out.println(String.format("userName: %s logged in!", user.getUsername()));
         return "success";
     }
 
