@@ -11,5 +11,6 @@ ${errormsg}</br>
         密碼：<input type="password" id = "password" name = "password"> <br>
         <input type="submit" id = "login" value="登入">
     </form>
+<a href="/index">回到首頁</a>
 </body>
 </html>

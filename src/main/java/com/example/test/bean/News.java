@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+
 @Data
-@TableName("user")
-public class User {
+@TableName("news")
+public class News {
     @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
-    private String username;
-    private String password;
-    private boolean permission;
+    private String title;
+    private String context;
+    private String author;
+    private String createTime;
 }

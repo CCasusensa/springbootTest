@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HelloController {
 
     @RequestMapping("/index")
-    public String sayHello(){
-        return "index.ftl";
+    public String show(){
+        return "index";
     }
 }
